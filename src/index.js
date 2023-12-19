@@ -4,10 +4,21 @@ import fs from 'fs';
 
 config();
 
-// Create a new client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] })
 
-// 
+// Loads in commands from files
+client.commands = new Collection();
+const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
+for (const file of commandFiles) {
+	const command = await import(`./commands/${file}`);
+	if ('data' in command && 'execute' in command) {
+		client.commands.set(command.data.name, command);
+	} else {
+		console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+	}
+}
+
+// Loads in event handlers from files
 const eventFiles = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
 	const event = await import(`./events/${file}`);
@@ -18,5 +29,4 @@ for (const file of eventFiles) {
 	}
 }
 
-// Login into Discord with client's token
 client.login(process.env.TOKEN);
