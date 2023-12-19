@@ -1,6 +1,5 @@
-import { SlashCommandBuilder } from 'discord.js';
+import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { joinVoiceChannel } from '@discordjs/voice';
-
 
 export const data = new SlashCommandBuilder()
   .setName('join')
@@ -8,6 +7,7 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
   const channel = interaction.member.voice.channel;
+  const embed = new EmbedBuilder();
   if (channel) {
     joinVoiceChannel({
       channelId: channel.id,
@@ -15,9 +15,13 @@ export async function execute(interaction) {
       selfDeaf: false,
       selfMute: true,
       adapterCreator: interaction.guild.voiceAdapterCreator,
-    })
-    await interaction.reply('Joined!');
+    });
+    embed.setColor(0x22C55E)
+      .setTitle('Joined!');
   } else {
-    await interaction.reply('Please join a voice channel first.');
+    embed.setColor(0xEF4444)
+      .setTitle('Please join a voice channel!')
+      .setDescription('You must be in a channel for the bot to join.');
   }
+  await interaction.reply({ embeds: [embed], ephemeral: true });
 }
