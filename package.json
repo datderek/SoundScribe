@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/index.js",
+    "dev": "nodemon ./src/index.js",
     "deploy": "node ./src/deploy-commands.js"
   },
   "keywords": [],
