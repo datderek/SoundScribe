@@ -13,7 +13,10 @@ export const data = new SlashCommandBuilder()
 export async function execute(interaction) {
   const embed = new EmbedBuilder();
   const connection = getVoiceConnection(interaction.guildId);
-
+  
+  /*
+   * Adds selected user to the set of recordable users.
+   */
   if (connection) {
     const userName = interaction.options.get('user').user.username;
     const userId = interaction.options.get('user').value;

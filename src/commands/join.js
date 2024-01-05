@@ -12,7 +12,9 @@ export async function execute(interaction) {
   const channel = interaction.member.voice.channel;
   const embed = new EmbedBuilder();
 
-  // Attempt to establish a connection to the user's voice channel
+  /*
+   * Attempt to establish a connection to the user's voice channel
+   */
   if (channel) {
     connection = joinVoiceChannel({
       channelId: channel.id,

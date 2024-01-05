@@ -6,7 +6,14 @@ config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] })
 
-// Loads in commands from files
+/*
+ * The IDs of the users that can be recorded by the bot.
+ */
+client.recordable = new Set();
+
+/* 
+ * Loads in the commands from the files
+ */
 client.commands = new Collection();
 const commandFiles = fs.readdirSync('./src/commands').filter(file => file.endsWith('.js'));
 for (const file of commandFiles) {
@@ -18,12 +25,9 @@ for (const file of commandFiles) {
 	}
 }
 
-/**
- * The IDs of the users that can be recorded by the bot.
+/* 
+ * Loads in the event handlers from the files 
  */
-client.recordable = new Set();
-
-// Loads in event handlers from files
 const eventFiles = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
 	const event = await import(`./events/${file}`);
