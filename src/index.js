@@ -18,6 +18,11 @@ for (const file of commandFiles) {
 	}
 }
 
+/**
+ * The IDs of the users that can be recorded by the bot.
+ */
+client.recordable = new Set();
+
 // Loads in event handlers from files
 const eventFiles = fs.readdirSync('./src/events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
