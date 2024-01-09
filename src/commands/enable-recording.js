@@ -3,7 +3,7 @@ import { getVoiceConnection } from '@discordjs/voice';
 import { saveAudioStreamToFile } from '../utils/saveAudioStreamToFile.js';
 
 export const data = new SlashCommandBuilder()
-  .setName('record')
+  .setName('enable-recording')
   .setDescription('Enables recording for the current user!')
 
 export async function execute(interaction) {
@@ -17,11 +17,6 @@ export async function execute(interaction) {
     const userName = interaction.member.user.username;
     const userId = interaction.member.user.id;
     interaction.client.recordable.add(userId);
-
-    const receiver = connection.receiver;
-		if (receiver.speaking.users.has(userId)) {
-			saveAudioStreamToFile(receiver, userId, userName);
-		}
 
     embed.setColor(0x22C55E)
       .setTitle('Enabled recording!')
