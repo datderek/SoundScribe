@@ -14,8 +14,7 @@ export function saveAudioStreamToFile(receiver, userId, userName) {
    */
   const opusStream = receiver.subscribe(userId, {
     end: {
-      behavior: EndBehaviorType.AfterSilence,
-      duration: 3500, 
+      behavior: EndBehaviorType.Manual,
     },
   });
 
