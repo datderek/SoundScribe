@@ -1,6 +1,5 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 import { getVoiceConnection } from '@discordjs/voice';
-import { saveAudioStreamToFile } from '../utils/saveAudioStreamToFile.js';
 
 export const data = new SlashCommandBuilder()
   .setName('enable-recording')
