@@ -12,11 +12,15 @@ export async function execute(interaction) {
    */
   const userName = interaction.member.user.username;
   const userId = interaction.member.user.id;
-  interaction.client.recordable.add(userId);
-
-  embed.setColor(0x22C55E)
-    .setTitle('Recording enabled.')
-    .setDescription(`The bot will now record audio from ${userName}`);
+  if (!interaction.client.recordable.has(userId)) {
+    interaction.client.recordable.add(userId);
+    embed.setColor(0x22C55E)
+      .setTitle('Recording enabled.')
+      .setDescription(`The bot will now record audio from ${userName}`);
+  } else {
+    embed.setColor(0xEF4444)
+      .setTitle('You have already enabled recording.')
+  }
 
   return await interaction.reply({ embeds: [embed], ephemeral: true });
 }

@@ -12,10 +12,14 @@ export async function execute(interaction) {
    */
   const userName = interaction.member.user.username;
   const userId = interaction.member.user.id;
-  interaction.client.recordable.delete(userId);
-
-  embed.setColor(0x22C55E)
-    .setTitle('Recording disabled.')
-    .setDescription(`The bot will no longer record audio from ${userName}`);
+  if (interaction.client.recordable.delete(userId)) {
+    embed.setColor(0x22C55E)
+      .setTitle('Recording disabled.')
+      .setDescription(`The bot will no longer record audio from ${userName}`);
+  } else {
+    embed.setColor(0xEF4444)
+      .setTitle('You have already disabled recording.')
+  }
+  
   return await interaction.reply({ embeds: [embed], ephemeral: true });
 }
