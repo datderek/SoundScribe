@@ -1,10 +1,10 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder,  } from 'discord.js';
+import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { getVoiceConnection } from '@discordjs/voice';
 import { saveAudioStreamToFile } from '../utils/saveAudioStreamToFile.js';
 
 export const data = new SlashCommandBuilder()
   .setName('start-recording')
-  .setDescription("Starts recording audio for all users that opt'd in");
+  .setDescription("Starts recording audio for users that granted permission.");
 
 export async function execute(interaction) {
   const embed = new EmbedBuilder();

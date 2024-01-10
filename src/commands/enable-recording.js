@@ -22,8 +22,8 @@ export async function execute(interaction) {
       .setDescription(`The bot will now record audio from ${userName}`);
   } else {
     embed.setColor(0xEF4444)
-    .setTitle('SoundScribe is not ready!')
-    .setDescription('Please use `/join` to invite the bot to your channel then try again.')
+      .setTitle('SoundScribe is not ready!')
+      .setDescription('Please use `/join` to invite the bot to your channel then try again.')
   }
 
   return await interaction.reply({ embeds: [embed], ephemeral: true });
