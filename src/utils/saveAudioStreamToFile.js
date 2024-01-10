@@ -9,13 +9,20 @@ export function saveAudioStreamToFile(receiver, userId, userName) {
   console.log(`Started recording ${filename}`);
 
   /* 
-   * Subscribe to the Opus audio stream from the specified user, terminating 
-   * after 3.5s of silence
+   * Subscribe to the Opus audio stream from the specified user
    */
   const opusStream = receiver.subscribe(userId, {
     end: {
       behavior: EndBehaviorType.Manual,
     },
+  });
+
+  /*
+   * Destroy the audio stream once the 'end' event has been emitted by
+   * `stop-recording.js`
+   */
+  opusStream.on("end", () => {
+    opusStream.destroy();
   });
 
   /*
@@ -34,7 +41,7 @@ export function saveAudioStreamToFile(receiver, userId, userName) {
   /*
    * Pipes the incoming Opus audio stream to the Ogg transform stream then
    * saves it to `./recordings` via the write stream.
-   */ 
+   */
   pipeline(opusStream, oggStream, out, (err) => {
     if (err) {
       console.warn(`Error recording file ${filename} - ${err.message}`);
