@@ -33,18 +33,21 @@ export async function execute(interaction) {
     const channelId = interaction.member.voice.channel.id;
     const voiceChannel = interaction.client.channels.cache.get(channelId);
     const receiver = connection.receiver;
+    let usersRecorded = "";
 
     for (const [member, info] of voiceChannel.members) {
       const userId = member;
       const userName = info.user.username;
       if (interaction.client.recordable.has(userId)) {
+        usersRecorded += `- ${userName}\n`;
         saveAudioStreamToFile(receiver, userId, userName);
       }
     }
 
     embed.setColor(0x22C55E)
       .setTitle('Recording has started!')
-      .setDescription(`The bot is now recording audio!`);
+      .setDescription(`SoundScribe is now recording audio!`)
+      .addFields({ name: 'Audio recorded for users:', value: usersRecorded })
   } else {
     embed.setColor(0xEF44444)
       .setTitle("Please invite the bot!")
