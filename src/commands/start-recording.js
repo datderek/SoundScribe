@@ -29,7 +29,7 @@ export async function execute(interaction) {
    * the same channel as the bot.
    */
   const connection = getVoiceConnection(interaction.guildId);
-  if (connection) {
+  if (connection && connection.state.status === 'ready') {
     const channelId = interaction.member.voice.channel.id;
     const voiceChannel = interaction.client.channels.cache.get(channelId);
     const receiver = connection.receiver;
@@ -45,11 +45,11 @@ export async function execute(interaction) {
     }
 
     embed.setColor(0x22C55E)
-      .setTitle('Recording has started!')
+      .setTitle('Recording has started.')
       .setDescription(`SoundScribe is now recording audio!`)
       .addFields({ name: 'Audio recorded for users:', value: usersRecorded })
   } else {
-    embed.setColor(0xEF44444)
+    embed.setColor(0xEF4444)
       .setTitle("Please invite the bot!")
       .setDescription("Bot needs to be in a channel to start recording. Please\
       invite the bot to your channel via `/join`");
