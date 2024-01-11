@@ -3,10 +3,17 @@ import { pipeline } from 'stream';
 import { EndBehaviorType } from '@discordjs/voice';
 import * as prism from 'prism-media';
 
+/*
+ * Creates a filename-safe timestamp based on the ISO-8601 format
+ */
+const createTimestamp = () => {
+  return (new Date()).toISOString().replaceAll(':', '-').replace(/\.\d+Z/, '');
+}
+
 export function saveAudioStreamToFile(receiver, userId, userName) {
-  const filename = `./recordings/${Date.now()}-${userName}.ogg`;
-  const out = createWriteStream(filename);
-  console.log(`Started recording ${filename}`);
+  const fileName = `./recordings/${createTimestamp()}-${userName}.ogg`;
+  const out = createWriteStream(fileName);
+  console.log(`Started recording ${fileName}`);
 
   /* 
    * Subscribe to the Opus audio stream from the specified user
@@ -44,9 +51,9 @@ export function saveAudioStreamToFile(receiver, userId, userName) {
    */
   pipeline(opusStream, oggStream, out, (err) => {
     if (err) {
-      console.warn(`Error recording file ${filename} - ${err.message}`);
+      console.warn(`Error recording file ${fileName} - ${err.message}`);
     } else {
-      console.log(`Recorded ${filename}`);
+      console.log(`Recorded ${fileName}`);
     }
   });
 }
