@@ -7,9 +7,15 @@ config();
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] })
 
 /*
- * The IDs of the users that can be recorded by the bot.
+ * Stores all IDs of the users that can be recorded by the bot.
  */
 client.recordable = new Set();
+
+/*
+ * Stores the filenames of recordings created by the bot such that the files
+ * can be easily accessed across slash commands.
+ */
+client.recordingFileNames = [];
 
 /* 
  * Loads in the commands from the files

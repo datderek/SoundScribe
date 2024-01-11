@@ -15,6 +15,9 @@ export async function execute(interaction) {
   const row = new ActionRowBuilder()
     .addComponents(pause);
 
+  /*
+   * Checks if there is atleast one user that has enabled their recording.
+   */
   if (interaction.client.recordable.size === 0) {
     embed.setColor(0xEF4444)
       .setTitle("No users to record!")
@@ -25,8 +28,8 @@ export async function execute(interaction) {
   }
 
   /*
-   * Starts recording audio for all users that enabled recording if they are in
-   * the same channel as the bot.
+   * Starts recording audio for users that opt'd to be recorded AND are in the
+   * same voice channel as the bot
    */
   const connection = getVoiceConnection(interaction.guildId);
   if (connection && connection.state.status === 'ready') {
@@ -40,7 +43,8 @@ export async function execute(interaction) {
       const userName = info.user.username;
       if (interaction.client.recordable.has(userId)) {
         usersRecorded += `- ${userName}\n`;
-        saveAudioStreamToFile(receiver, userId, userName);
+        const fileName = saveAudioStreamToFile(receiver, userId, userName)
+        interaction.client.recordingFileNames.push(fileName);
       }
     }
 
@@ -54,6 +58,6 @@ export async function execute(interaction) {
       .setDescription("Bot needs to be in a channel to start recording. Please\
       invite the bot to your channel via `/join`");
   }
-  return await interaction.reply({ embeds: [embed], components: [row] });
 
+  return await interaction.reply({ embeds: [embed], components: [row] });
 }

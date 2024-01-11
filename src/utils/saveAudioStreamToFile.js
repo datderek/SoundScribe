@@ -56,4 +56,6 @@ export function saveAudioStreamToFile(receiver, userId, userName) {
       console.log(`Recorded ${fileName}`);
     }
   });
+
+  return fileName;
 }
