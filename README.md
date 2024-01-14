@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/datderek/SoundScribe/assets/88995035/74d49ca7-ad51-4c37-8802-1485c69a0de4" data-canonical-src="https://github.com/datderek/SoundScribe/assets/88995035/74d49ca7-ad51-4c37-8802-1485c69a0de4"/>
+  <img src="https://github.com/datderek/SoundScribe/assets/88995035/4a399b1c-a71b-4284-a692-b41e3e278564" data-canonical-src="https://github.com/datderek/SoundScribe/assets/88995035/4a399b1c-a71b-4284-a692-b41e3e278564"/>
 </p>
 <h1 align="center">Say it aloud and let SoundScribe handle the rest!</h1>
 <p align="center">
@@ -8,6 +8,7 @@
   <img src="https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue"/>
   <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"/>
 </p>
+
 SoundScribe is an open-source discord bot designed to transcribe audio in real-time within voice channels, saving you the effort of having to remember what has been said.
 
 Invite SoundScribe to your server effortlessly capture and transcribe conversations! 
