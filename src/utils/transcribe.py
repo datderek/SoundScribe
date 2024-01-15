@@ -1,7 +1,6 @@
-import whisper
-import sys
+import sys;
 
-fileName = str(sys.argv[1])
-model = whisper.load_model("tiny.en")
-result = model.transcribe(f"{fileName}", fp16=False)
-print(result['text'])
+# Read in data from stdin
+for data in sys.stdin:
+  print(f"Received data from Node.js: {data.strip()}")
+

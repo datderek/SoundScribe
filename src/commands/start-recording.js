@@ -1,6 +1,6 @@
 import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { getVoiceConnection } from '@discordjs/voice';
-import { saveAudioStreamToFile } from '../utils/saveAudioStreamToFile.js';
+import { createTranscription } from '../utils/createTranscription.js';
 
 export const data = new SlashCommandBuilder()
   .setName('start-recording')
@@ -43,8 +43,7 @@ export async function execute(interaction) {
       const userName = info.user.username;
       if (interaction.client.recordable.has(userId)) {
         usersRecorded += `- ${userName}\n`;
-        const fileName = saveAudioStreamToFile(receiver, userId, userName)
-        interaction.client.recordingFileNames.push(fileName);
+        createTranscription(receiver, userId, userName)
       }
     }
 
