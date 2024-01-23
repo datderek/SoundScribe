@@ -6,7 +6,7 @@ export function createTranscription(receiver, userId, userName) {
   /* 
    * Create the Python child process to handle transcription
    */
-  const pythonProcess = spawn('python', ['./src/utils/transcribe.py']);
+  const pythonProcess = spawn('python3', ['./src/utils/transcribe.py']);
 
   /*
    * Subscribe to the Opus audio stream from the specified user

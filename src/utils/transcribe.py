@@ -1,32 +1,23 @@
-import whisper
 import sys
-from datetime import datetime, timedelta
-from queue import Queue
+import threading
+import queue
+import time
 
-model = whisper.load_model('tiny.en')
-audio_data_queue = Queue()
-last_phrase_time = None
+# Stores incoming audio data
+data_queue = queue.Queue()
 
-while True:
-  # Saves new audio data into a queue
-  for line in sys.stdin:
-    audio_data_queue.put(line)
+# Background thread to constantly receive input data from stdin
+# so that the main thread is not blocked
+def read_input():
+  print("Background thread has started", flush = True)
+  while True:
+    data = sys.stdin.buffer.read(1024)
+    if data:
+      data_queue.put(data)
+      data = None
+      print("Received audio data!", flush = True)
 
-  now = datetime.utcnow()
-
-  if not audio_data_queue.empty():
-    phrase_complete = False
-    if last_phrase_time and now - last_phrase_time > timedelta(seconds=5):
-        phrase_complete = True
-        print("Reached it here")
-    
-    last_phrase_time = now
-
-    audio_data = ''.join(audio_data_queue.queue)
-    audio_data_queue.queue.clear()
-
-    result = model.transcribe(audio_data, fp16=False)
-    text = result['text'].strip()
-    print(text)
-    
-    
+print("Main thread has started", flush = True)
+input_thread = threading.Thread(target=read_input)
+input_thread.start()
+time.sleep(10)
