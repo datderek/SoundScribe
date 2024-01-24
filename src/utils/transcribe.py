@@ -1,23 +1,36 @@
+import numpy as np
 import sys
 import threading
-import queue
-import time
+import whisper
+from queue import Queue
+from time import sleep
 
-# Stores incoming audio data
-data_queue = queue.Queue()
+print("Loading transcription model", flush = True)
+model = whisper.load_model("base.en")
+print("Model has loaded.", flush = True)
+data_queue = Queue()
 
 # Background thread to constantly receive input data from stdin
 # so that the main thread is not blocked
 def read_input():
-  print("Background thread has started", flush = True)
   while True:
-    data = sys.stdin.buffer.read(1024)
-    if data:
-      data_queue.put(data)
-      data = None
-      print("Received audio data!", flush = True)
+    data_chunk = sys.stdin.buffer.read(1024)
+    if data_chunk:
+      data_queue.put(data_chunk)
+      data_chunk = None
 
-print("Main thread has started", flush = True)
 input_thread = threading.Thread(target=read_input)
 input_thread.start()
-time.sleep(10)
+
+while True:
+  if not data_queue.empty():
+    data = b''.join(data_queue.queue)
+    data_queue.queue.clear()
+
+    np_data = np.frombuffer(data, dtype=np.int16).astype(np.float32) / 32768.0
+
+    result = model.transcribe(np_data, fp16 = False)
+    text = result['text']
+    print(f"Transcription: {text}", flush = True)
+    sleep(1)
+    
