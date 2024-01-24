@@ -8,6 +8,7 @@ export function createTranscription(receiver, userId, userName, interaction) {
    * Create the Python child process to handle transcription
    */
   const pythonProcess = spawn('python', ['./src/utils/transcribe.py']);
+  interaction.client.processes.push(pythonProcess);
 
   /*
    * Subscribe to the Opus audio stream from the specified user
@@ -61,6 +62,6 @@ export function createTranscription(receiver, userId, userName, interaction) {
   });
 
   pythonProcess.on('close', (code) => {
-    console.log(`Python Process exited with code ${code}`);
+    console.log(`Ended transcription process for ${userName}`);
   });
 }
