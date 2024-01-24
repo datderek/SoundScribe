@@ -1,6 +1,6 @@
-import { ActionRowBuilder, ButtonBuilder, ButtonStyle, EmbedBuilder, SlashCommandBuilder } from 'discord.js';
-import { getVoiceConnection } from '@discordjs/voice';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { createTranscription } from '../utils/createTranscription.js';
+import { joinChannel } from '../utils/joinChannel.js';
 
 export const data = new SlashCommandBuilder()
   .setName('start-recording')
@@ -8,12 +8,6 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction) {
   const embed = new EmbedBuilder();
-  const pause = new ButtonBuilder()
-    .setCustomId('stop')
-    .setLabel('⏹️ Stop')
-    .setStyle(ButtonStyle.Danger);
-  const row = new ActionRowBuilder()
-    .addComponents(pause);
 
   /*
    * Checks if there is atleast one user that has enabled their recording.
@@ -28,11 +22,11 @@ export async function execute(interaction) {
   }
 
   /*
-   * Starts recording audio for users that opt'd to be recorded AND are in the
-   * same voice channel as the bot
+   * Attempt to join the invoked user's voice channel and transcribe audio for 
+   * users that opt'd to be recorded AND are in the same voice channel as the bot
    */
-  const connection = getVoiceConnection(interaction.guildId);
-  if (connection && connection.state.status === 'ready') {
+  try {
+    const connection = await joinChannel(interaction);
     const channelId = interaction.member.voice.channel.id;
     const voiceChannel = interaction.client.channels.cache.get(channelId);
     const receiver = connection.receiver;
@@ -43,20 +37,17 @@ export async function execute(interaction) {
       const userName = info.user.username;
       if (interaction.client.recordable.has(userId)) {
         usersRecorded += `- ${userName}\n`;
-        createTranscription(receiver, userId, userName)
+        createTranscription(receiver, userId, userName, interaction);
       }
     }
 
     embed.setColor(0x22C55E)
       .setTitle('Recording has started.')
       .setDescription(`SoundScribe is now recording audio!`)
-      .addFields({ name: 'Audio recorded for users:', value: usersRecorded })
-  } else {
-    embed.setColor(0xEF4444)
-      .setTitle("Please invite the bot!")
-      .setDescription("Bot needs to be in a channel to start recording. Please\
-      invite the bot to your channel via `/join`");
+      .addFields({ name: 'Audio recorded for users:', value: usersRecorded });
+    return await interaction.reply({ embeds: [embed] });
+  } catch (error) {
+    console.log(error);
+    return;
   }
-
-  return await interaction.reply({ embeds: [embed], components: [row] });
 }
