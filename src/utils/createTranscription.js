@@ -40,7 +40,8 @@ export function createTranscription(receiver, userId, userName, interaction) {
   });
 
   /*
-   * Handles the events thrown by the Python process
+   * Transcribe audio and outputs to Discord. Creates a new message every minute.
+   * Otherwise edits message by appending new transcription text.
    */
   let lastMinute = null;
   let message;
