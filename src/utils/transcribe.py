@@ -5,9 +5,7 @@ import whisper
 from queue import Queue
 from time import sleep
 
-print("Loading transcription model", flush = True)
-model = whisper.load_model("small.en")
-print("Model has loaded.", flush = True)
+model = whisper.load_model("base.en")
 data_queue = Queue()
 
 # Background thread set up to receive input data from stdin so that the 
@@ -33,6 +31,6 @@ while True:
     
     result = model.transcribe(np_data, fp16 = False)
     text = result['text'].strip()
-    print(f"{text}", flush = True)
-    sleep(0.25)
+    print(f"{text}", end = " ", flush = True)
+    sleep(3)
     

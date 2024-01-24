@@ -7,7 +7,7 @@ export function createTranscription(receiver, userId, userName, interaction) {
   /* 
    * Create the Python child process to handle transcription
    */
-  const pythonProcess = spawn('python3', ['./src/utils/transcribe.py']);
+  const pythonProcess = spawn('python', ['./src/utils/transcribe.py']);
 
   /*
    * Subscribe to the Opus audio stream from the specified user
@@ -41,8 +41,19 @@ export function createTranscription(receiver, userId, userName, interaction) {
   /*
    * Handles the events thrown by the Python process
    */
+  let lastMinute = null;
+  let message;
+  let messageContent;
   pythonProcess.stdout.on('data', async (data) => {
-    await interaction.followUp({ content: `**${userName}** - ${data}` });
+    const currentMinute = new Date().getUTCMinutes();
+    if (currentMinute !== lastMinute) {
+      messageContent = `**${userName}** - ${data}`
+      message = await interaction.followUp({ content: messageContent });
+      lastMinute = currentMinute;
+    } else {
+      messageContent += `${data}`;
+      await message.edit(messageContent);
+    }
   });
 
   pythonProcess.stderr.on('data', (data) => {
