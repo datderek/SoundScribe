@@ -1,6 +1,7 @@
 import { EndBehaviorType } from "@discordjs/voice";
 import { pipeline } from "stream"
 import { spawn } from 'child_process';
+import prism from 'prism-media';
 
 export function createTranscription(receiver, userId, userName) {
   /* 
@@ -18,9 +19,18 @@ export function createTranscription(receiver, userId, userName) {
   })
 
   /*
+   * Decodes Opus audio into PCM
+   */
+  const decoder = new prism.opus.Decoder({
+    rate: 16000,  
+    channels: 1,   
+    frameSize: 480  
+  });
+
+  /*
    * Pipe the Opus stream into the Python process
    */
-  pipeline(opusStream, pythonProcess.stdin, (err) => {
+  pipeline(opusStream, decoder, pythonProcess.stdin, (err) => {
     if (err) {
       console.warn(`Error transcribing audio`);
     } else {
