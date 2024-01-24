@@ -3,7 +3,7 @@ import { pipeline } from "stream"
 import { spawn } from 'child_process';
 import prism from 'prism-media';
 
-export function createTranscription(receiver, userId, userName) {
+export function createTranscription(receiver, userId, userName, interaction) {
   /* 
    * Create the Python child process to handle transcription
    */
@@ -41,8 +41,8 @@ export function createTranscription(receiver, userId, userName) {
   /*
    * Handles the events thrown by the Python process
    */
-  pythonProcess.stdout.on('data', (data) => {
-    console.log(`Python Process Output: ${data}`);
+  pythonProcess.stdout.on('data', async (data) => {
+    await interaction.followUp({ content: `**${userName}** - ${data}` });
   });
 
   pythonProcess.stderr.on('data', (data) => {
