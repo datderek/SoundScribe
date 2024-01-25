@@ -5,6 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "setup": "npm install && poetry install --no-root",
     "start": "node ./src/index.js",
     "dev": "nodemon ./src/index.js",
     "deploy": "node ./src/deploy-commands.js"

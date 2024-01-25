@@ -7,7 +7,7 @@ export function createTranscription(receiver, userId, userName, interaction) {
   /* 
    * Create the Python child process to handle transcription
    */
-  const pythonProcess = spawn('python', ['./src/utils/transcribe.py']);
+  const pythonProcess = spawn('./.venv/bin/python', ['./src/utils/transcribe.py']);
   interaction.client.processes.push(pythonProcess);
 
   /*
