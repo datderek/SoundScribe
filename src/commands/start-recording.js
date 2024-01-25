@@ -4,7 +4,7 @@ import { joinChannel } from '../utils/joinChannel.js';
 
 export const data = new SlashCommandBuilder()
   .setName('start-recording')
-  .setDescription("Starts recording audio for users that granted permission.");
+  .setDescription("Records and transcribes audio for users that granted permission.");
 
 export async function execute(interaction) {
   const embed = new EmbedBuilder();
@@ -15,8 +15,8 @@ export async function execute(interaction) {
   if (interaction.client.recordable.size === 0) {
     embed.setColor(0xEF4444)
       .setTitle("No users to record!")
-      .setDescription("If you would like to have your audio recorded, please\
-      enable the recording via `/enable-recording`");
+      .setDescription("If you would like to have your audio transcribed, please\
+      enable the recording with `/opt-in`");
 
     return await interaction.reply({ embeds: [embed] });
   }
@@ -43,7 +43,7 @@ export async function execute(interaction) {
 
     embed.setColor(0x22C55E)
       .setTitle('Recording has started.')
-      .setDescription(`SoundScribe is now recording audio!`)
+      .setDescription(`SoundScribe is now recording and transcribing audio!`)
       .addFields({ name: 'Audio recorded for users:', value: usersRecorded });
     return await interaction.reply({ embeds: [embed] });
   } catch (error) {

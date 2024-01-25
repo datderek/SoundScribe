@@ -1,8 +1,8 @@
 import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
-  .setName('disable-recording')
-  .setDescription('Disables recording for the invoked user.')
+  .setName('opt-out')
+  .setDescription('Disables recording and transcription for the invoked user.')
 
 export async function execute(interaction) {
   const embed = new EmbedBuilder();
@@ -15,7 +15,7 @@ export async function execute(interaction) {
   if (interaction.client.recordable.delete(userId)) {
     embed.setColor(0x22C55E)
       .setTitle('Recording disabled.')
-      .setDescription(`The bot will no longer record audio from ${userName}`);
+      .setDescription(`The bot will no longer receive audio from ${userName}`);
   } else {
     embed.setColor(0xEF4444)
       .setTitle('You have already disabled recording.')
