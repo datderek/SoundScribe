@@ -1,8 +1,8 @@
 import { SlashCommandBuilder, EmbedBuilder } from 'discord.js';
 
 export const data = new SlashCommandBuilder()
-  .setName('enable-recording')
-  .setDescription('Enables recording for the invoked user.')
+  .setName('opt-in')
+  .setDescription('Enables recording and transcription for the invoked user.')
 
 export async function execute(interaction) {
   const embed = new EmbedBuilder();
@@ -16,7 +16,7 @@ export async function execute(interaction) {
     interaction.client.recordable.add(userId);
     embed.setColor(0x22C55E)
       .setTitle('Recording enabled.')
-      .setDescription(`The bot will now record audio from ${userName}`);
+      .setDescription(`The bot will now receive audio from ${userName}`);
   } else {
     embed.setColor(0xEF4444)
       .setTitle('You have already enabled recording.')

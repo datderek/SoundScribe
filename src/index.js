@@ -1,4 +1,4 @@
-import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
+import { Client, Collection, GatewayIntentBits } from 'discord.js';
 import { config } from 'dotenv';
 import fs from 'fs';
 
@@ -12,10 +12,9 @@ const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBit
 client.recordable = new Set();
 
 /*
- * Stores the filenames of recordings created by the bot such that the files
- * can be easily accessed across slash commands.
+ * Stores all of the transcription processes started by the bot.
  */
-client.recordingFileNames = [];
+client.processes = [];
 
 /* 
  * Loads in the commands from the files
