@@ -24,8 +24,9 @@ Invite SoundScribe to your server effortlessly capture and transcribe conversati
 ### Install the Prerequisites
 - Install `FFmpeg` either [manually](https://ffmpeg.org/) or through package manager (apt, brew, choco, etc.)
 - Install `rust` by following the [Getting Started page](https://www.rust-lang.org/learn/get-started), this may needed for the OpenAI model
+- Install `Poetry` by following the [Installation documentation](https://python-poetry.org/docs/#installing-with-the-official-installer), this is used to manage the Python dependencies
 - Clone this repository: `git clone https://github.com/datderek/SoundScribe.git`
-- Install the dependencies: `npm install`
+- Install the (Node.js and Python) dependencies: `npm run setup`
 ### Setting up the Discord bot
 1. Set up the bot by following the Discord.js [documentation](https://discordjs.guide/preparations/setting-up-a-bot-application.html#creating-your-bot) and note down the **Bot Token** and the **Application ID**
 2. Invite the bot to your server by [creating an invite link](https://discordjs.guide/preparations/adding-your-bot-to-servers.html#creating-and-using-your-invite-link).
